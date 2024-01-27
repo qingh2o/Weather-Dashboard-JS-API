@@ -16,20 +16,24 @@ function displayWeather(data) {
 
   console.log(data);
   //Display today`s weather
-  var currentDisplay = $('<div>').addClass("m-3")
-  var cityDisplay = $('<h3>').text(data.name + ' ' + currentDate);  
+  var currentDisplay = $('<div>').addClass('p-3')
+  var cityDisplayDate = $('<h3>').text(data.name + ' ' + currentDate);  
   
    //Get weather icon from database
    var iconKey = data.weather[0].icon;
    var iconURL = 'https://openweathermap.org/img/wn/' + iconKey + '@2x.png';
-   var weatherIcon = $('<img>').attr('src', iconURL)
+   var weatherIcon = $('<img>').attr('src', iconURL);
   
   // Create weather conditions element
-  var temperature =$('<p>').text('Temperature: ' + (data.main.temp - 273.15).toFixed(2) + ' °C');
+  // Convert from Kelvin to Celsius
+
+  var temperature = $('<p>').text((data.main.temp - 273.15).toFixed(2) + ' °C').addClass('fs-1');
+  temperature.prepend(weatherIcon);
   var windSpend = $('<p>').text('Wind: ' + data.wind.speed + ' KPH');
   var humidity = $('<p>').text('Humidity: ' + data.main.humidity + '%');
 
-  currentDisplay.append(cityDisplay,weatherIcon,temperature,windSpend,humidity)
+
+  currentDisplay.append(cityDisplayDate,temperature,windSpend,humidity)
   $('#today').append(currentDisplay);
 };
 
