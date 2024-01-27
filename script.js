@@ -13,7 +13,7 @@ var searchHistory = [];
 
 //Display the weather (after click search button or city buttons)
 function displayWeather(data) {
-
+  $('#today').empty();
   console.log(data);
   //Display today`s weather
   var currentDisplay = $('<div>').addClass('p-3')
@@ -26,12 +26,10 @@ function displayWeather(data) {
   
   // Create weather conditions element
   // Convert from Kelvin to Celsius
-
   var temperature = $('<p>').text((data.main.temp - 273.15).toFixed(2) + ' °C').addClass('fs-1');
   temperature.prepend(weatherIcon);
   var windSpend = $('<p>').text('Wind: ' + data.wind.speed + ' KPH');
   var humidity = $('<p>').text('Humidity: ' + data.main.humidity + '%');
-
 
   currentDisplay.append(cityDisplayDate,temperature,windSpend,humidity)
   $('#today').append(currentDisplay);
