@@ -11,9 +11,26 @@ var searchHistory = [];
 
 
 
-//Dispaly the weather (after click search button or city buttons)
-function diaplayWeather(Data) {
-  console.log(Data);
+//Display the weather (after click search button or city buttons)
+function displayWeather(data) {
+
+  console.log(data);
+  //Display today`s weather
+  var currentDisplay = $('<div>').addClass("m-3")
+  var cityDisplay = $('<h3>').text(data.name + ' ' + currentDate);  
+  
+   //Get weather icon from database
+   var iconKey = data.weather[0].icon;
+   var iconURL = 'https://openweathermap.org/img/wn/' + iconKey + '@2x.png';
+   var weatherIcon = $('<img>').attr('src', iconURL)
+  
+  // Create weather conditions element
+  var temperature =$('<p>').text('Temperature: ' + (data.main.temp - 273.15).toFixed(2) + ' °C');
+  var windSpend = $('<p>').text('Wind: ' + data.wind.speed + ' KPH');
+  var humidity = $('<p>').text('Humidity: ' + data.main.humidity + '%');
+
+  currentDisplay.append(cityDisplay,weatherIcon,temperature,windSpend,humidity)
+  $('#today').append(currentDisplay);
 };
 
 // On click event associated with the Search Button
@@ -30,5 +47,5 @@ $('#search-button').on('click', function (event) {
     .then(function (response) {
       return response.json();
     })
-    .then(diaplayWeather);
+    .then(displayWeather);
 });
