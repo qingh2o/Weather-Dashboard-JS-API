@@ -1,11 +1,8 @@
-// API key
 var APIKey = "79855f5e2cc5e0d576620f20c250c98a";
-
 var currentDate = dayjs().format('DD/MM/YYYY');
-
 var searchHistory = [];
 
-//Display today's weather (after click search button or city buttons)
+//Display today's weather 
 function displayTodayWeather(todayData) {
   //Clear previous city weather information
   $('#today').empty();
@@ -29,8 +26,7 @@ function displayTodayWeather(todayData) {
   $('#today').append(todayDisplay);
 };
 
-
-//Display 5-day forecast weather (after click search button or city buttons)
+//Display 5-day forecast weather 
 function displayForecastWeather(forecastData) {
 
   //Clear previous city weather information
@@ -62,10 +58,9 @@ function displayForecastWeather(forecastData) {
       //Display on the page
       forecastDisplay.append(forecastDate, weatherIcon, temperature, windSpend, humidity);
       $('#forecast').append(forecastDisplay);
-    }
-  }
+    };
+  };
 };
-
 
 // Fetch and display weather
 function fetchDisplayWeather(cityName) {
@@ -97,14 +92,18 @@ $('#search-button').on('click', function (event) {
   console.log(inputCity);
 
   fetchDisplayWeather(inputCity);
-  
+
+  $('#search-input').val("");
+
   // Add the searched city to the search history
   searchHistory.push(inputCity);
 
   // Clear user input
   $('#search-input').val("");
+  
   // Update the search history display
   updateSearchHistory();
+
 });
 
 // Function to update the search history display
@@ -114,9 +113,14 @@ function updateSearchHistory() {
 
   // Create buttons for each city in the search history
   for (var i = 0; i < searchHistory.length; i++) {
-    var cityButton = $('<button>').text(searchHistory[i]).addClass('btn btn-secondary m-1');
+    var cityButton = $('<button>').text(searchHistory[i]).addClass('city-button btn btn-secondary m-1');
 
     // Append the city button to the search history container
     $('#history').append(cityButton);
-  }
-}
+  };
+};
+
+$(document).on('click', '.city-button', function () {
+  var clickedCity = $(this).text();
+  fetchDisplayWeather(clickedCity);
+});
