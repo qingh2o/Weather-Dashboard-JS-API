@@ -11,19 +11,19 @@ var searchHistory = [];
 
 
 
-//Display the weather (after click search button or city buttons)
-function displayWeather(data) {
+//Display today's weather (after click search button or city buttons)
+function displayTodayWeather(data) {
   $('#today').empty();
-  console.log(data);
+  console.log('Today:', data);
   //Display today`s weather
-  var currentDisplay = $('<div>').addClass('p-3')
-  var cityDisplayDate = $('<h3>').text(data.name + ' ' + currentDate);  
-  
-   //Get weather icon from database
-   var iconKey = data.weather[0].icon;
-   var iconURL = 'https://openweathermap.org/img/wn/' + iconKey + '@2x.png';
-   var weatherIcon = $('<img>').attr('src', iconURL);
-  
+  var todayDisplay = $('<div>').addClass('p-3')
+  var cityDisplayDate = $('<h3>').text(data.name + ' ' + currentDate);
+
+  //Get weather icon from database
+  var iconKey = data.weather[0].icon;
+  var iconURL = 'https://openweathermap.org/img/wn/' + iconKey + '@2x.png';
+  var weatherIcon = $('<img>').attr('src', iconURL);
+
   // Create weather conditions element
   // Convert from Kelvin to Celsius
   var temperature = $('<p>').text((data.main.temp - 273.15).toFixed(2) + ' °C').addClass('fs-1');
@@ -31,9 +31,22 @@ function displayWeather(data) {
   var windSpend = $('<p>').text('Wind: ' + data.wind.speed + ' KPH');
   var humidity = $('<p>').text('Humidity: ' + data.main.humidity + '%');
 
-  currentDisplay.append(cityDisplayDate,temperature,windSpend,humidity)
-  $('#today').append(currentDisplay);
+  //Display on the page
+  todayDisplay.append(cityDisplayDate, temperature, windSpend, humidity)
+  $('#today').append(todayDisplay);
 };
+
+
+//Display 5-day forecast weather (after click search button or city buttons)
+function displayForecastWeather(forecasdata) {
+  var fiveDayData = forecasdata.list;
+  console.log('5day:', fiveDayData);
+  
+
+};
+
+
+
 
 // On click event associated with the Search Button
 $('#search-button').on('click', function (event) {
@@ -42,12 +55,22 @@ $('#search-button').on('click', function (event) {
   var inputCity = $('#search-input').val().trim();
   console.log(inputCity);
 
-  // URL query the database
-  var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + inputCity + "&appid=" + APIKey;
+  // Build  query  URL format
+  var queryTodayURL = "https://api.openweathermap.org/data/2.5/weather?q=" + inputCity + "&appid=" + APIKey;
+  var queryForecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + inputCity + "&appid=" + APIKey + '&cnt=5';
 
-  fetch(queryURL)
+  //Get today' weather from database
+  fetch(queryTodayURL)
     .then(function (response) {
       return response.json();
     })
-    .then(displayWeather);
+    .then(displayTodayWeather);
+
+ //Get 5-day forecast from database
+  fetch(queryForecastURL)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(displayForecastWeather);
+
 });
