@@ -86,12 +86,14 @@ function fetchDisplayWeather(cityName) {
     })
     .then(function (todayData) {
       var dataBaseCityName = todayData.name;
+
       //Validate if the input is a valid city name
       if (cityName.toLowerCase() === dataBaseCityName.toLowerCase()) {
         displayTodayWeather(todayData);
-        //Add the searched city to the search history (if not already present)
+         //Add the searched city to the search history (if not already present)
         if (!searchHistory.includes(cityName)) {
           searchHistory.push(cityName);
+          console.log('searchHistory'+searchHistory);
           //Update the search history display
           updateSearchHistory();
         }
@@ -121,7 +123,7 @@ $('#search-button').on('click', function (event) {
 
   //Convert input city name format match OpenWeatherMap API city name
   inputCity = inputCity.charAt(0).toUpperCase() + inputCity.slice(1).toLowerCase();
-
+ 
   console.log(inputCity);
   $('#search-input').val("");
   fetchDisplayWeather(inputCity);
@@ -163,5 +165,5 @@ $("#clear").on("click", function (event) {
   $('#history').empty();
   //empty the local storage
   localStorage.clear();
-
+  searchHistory = [];
 });
