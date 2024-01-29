@@ -7,7 +7,7 @@ var storedHistory = localStorage.getItem('savedSearchHistory');
 if (storedHistory) {
   searchHistory = JSON.parse(storedHistory);
   updateSearchHistory();
-}
+};
 
 //Display today's weather 
 function displayTodayWeather(todayData) {
@@ -19,8 +19,8 @@ function displayTodayWeather(todayData) {
   var todayDisplay = $('<div>').addClass('p-3')
   var cityDisplayDate = $('<h3>').text(todayData.name + ' ' + currentDate);
   var temperature = $('<p>').text((todayData.main.temp - 273.15).toFixed(2) + ' °C').addClass('fs-1');
-  var windSpend = $('<p>').text('Wind: ' + todayData.wind.speed + ' KPH');
-  var humidity = $('<p>').text('Humidity: ' + todayData.main.humidity + '%');
+  var windSpend = $('<p>').text('Wind: ' + todayData.wind.speed + ' KPH').addClass('mx-5');
+  var humidity = $('<p>').text('Humidity: ' + todayData.main.humidity + '%').addClass('mx-5');
 
   //Get weather icon from database
   var iconKey = todayData.weather[0].icon;
@@ -29,7 +29,7 @@ function displayTodayWeather(todayData) {
 
   //Display on the page
   temperature.prepend(weatherIcon);
-  todayDisplay.append(cityDisplayDate, temperature, windSpend, humidity)
+  todayDisplay.append(cityDisplayDate, temperature, windSpend, humidity);
   $('#today').append(todayDisplay);
 };
 
@@ -38,16 +38,15 @@ function displayForecastWeather(forecastData) {
 
   //Clear previous city weather information
   $('#forecast').empty();
-  console.log(forecastData.list);
 
   for (var i = 0; i < forecastData.list.length; i++) {
     var hoursData = dayjs(forecastData.list[i].dt_txt).format('H');
+
     // Create current hour variable to compare with database
-    var currentHour = dayjs().format('H')
-    console.log('currentHour' + currentHour);
+    var currentHour = dayjs().format('H');
 
     //Filter the timestamp 
-    if (parseInt(hoursData) >= parseInt(currentHour) - 3 && parseInt(hoursData) < parseInt(currentHour)) {
+    if (parseInt(currentHour) - 3 <= parseInt(hoursData) && parseInt(hoursData) < parseInt(currentHour)) {
 
       // Create 5-day forecast weather conditions element
       var filterData = forecastData.list[i]
@@ -72,7 +71,6 @@ function displayForecastWeather(forecastData) {
   };
 };
 
-
 //Fetch and display weather
 function fetchDisplayWeather(cityName) {
   //Build  query  URL format
@@ -90,10 +88,12 @@ function fetchDisplayWeather(cityName) {
       //Validate if the input is a valid city name
       if (cityName.toLowerCase() === dataBaseCityName.toLowerCase()) {
         displayTodayWeather(todayData);
-         //Add the searched city to the search history (if not already present)
+
+        //Check the input city if already present on the screen
         if (!searchHistory.includes(cityName)) {
           searchHistory.push(cityName);
-          console.log('searchHistory'+searchHistory);
+          console.log('searchHistory' + searchHistory);
+
           //Update the search history display
           updateSearchHistory();
         }
@@ -104,6 +104,7 @@ function fetchDisplayWeather(cityName) {
 
     //Display error modal when input is invalid
     .catch(function () {
+      $('#today').empty();
       $('#errorModal').modal('show');
     });
 
@@ -123,9 +124,10 @@ $('#search-button').on('click', function (event) {
 
   //Convert input city name format match OpenWeatherMap API city name
   inputCity = inputCity.charAt(0).toUpperCase() + inputCity.slice(1).toLowerCase();
- 
-  console.log(inputCity);
+
   $('#search-input').val("");
+
+  //Display weather on the page
   fetchDisplayWeather(inputCity);
 
 });
@@ -142,6 +144,7 @@ function updateSearchHistory() {
   //Create buttons for each city in the search history
   for (var i = 0; i < searchHistory.length; i++) {
     var cityButton = $('<button>').text(searchHistory[i]).addClass('city-button btn btn-secondary m-1');
+
     //Append the city button to the search history container
     $('#history').append(cityButton);
   };

@@ -9,7 +9,6 @@
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <title>Weather Dashboard</title>
-  </style>
 </head>
 
 <body>
@@ -51,17 +50,16 @@
       </aside>
 
       <div class="col-lg-9 mt-1">
-        <section>
+        <div>
           <!-- Current weather -->
           <div id="today" class="border border-2 border-light rounded shadow-sm p-3" style="min-height: 250px"
             aria-live="polite">
           </div>
-        </section>
+        </div>
         <section>
           <h5 class="text-body-tertiary m-3 p-2 mb-0">5-Day Forecast:</h5>
           <!-- 5-Day Forecast-->
           <div id="forecast" class="row col-lg-12" aria-live="polite">
-
           </div>
         </section>
       </div>
@@ -74,12 +72,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Error</h5>
-          <button type="button" class="close"  data-bs-dismiss="modal"aria-label="Close">
+          <button type="button" class="close"  data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body" id="errorModalBody">
-          The city not found!
+          Please enter a valid city name!
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
