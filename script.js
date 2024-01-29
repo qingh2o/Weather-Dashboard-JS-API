@@ -72,6 +72,7 @@ function displayForecastWeather(forecastData) {
   };
 };
 
+
 // Fetch and display weather
 function fetchDisplayWeather(cityName) {
   // Build  query  URL format
@@ -97,8 +98,12 @@ function fetchDisplayWeather(cityName) {
       } else {
         return;
       }
-    });
+    })
 
+    .catch(function () {
+      $('#errorModal').modal('show');
+    });
+  
 
   // Get 5-day forecast from database
   fetch(queryForecastURL)
@@ -146,7 +151,7 @@ $(document).on('click', '.city-button', function () {
 //Click event for clear history
 $("#clear").on("click", function (event) {
   event.preventDefault();
-  
+
   //empty previous weather information
   $('#forecast').empty();
   $('#today').empty();
