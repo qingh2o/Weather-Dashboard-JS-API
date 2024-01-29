@@ -2,7 +2,7 @@ var APIKey = "79855f5e2cc5e0d576620f20c250c98a";
 var currentDate = dayjs().format('DD/MM/YYYY');
 var searchHistory = [];
 
-// Load search history from local storage
+//Load search history from local storage
 var storedHistory = localStorage.getItem('savedSearchHistory');
 if (storedHistory) {
   searchHistory = JSON.parse(storedHistory);
@@ -47,8 +47,8 @@ function displayForecastWeather(forecastData) {
     console.log('currentHour' + currentHour);
 
     //Filter the timestamp 
-    if (parseInt(hoursData) >= parseInt(currentHour)-3 && parseInt(hoursData) < parseInt(currentHour)) {
-      
+    if (parseInt(hoursData) >= parseInt(currentHour) - 3 && parseInt(hoursData) < parseInt(currentHour)) {
+
       // Create 5-day forecast weather conditions element
       var filterData = forecastData.list[i]
       console.log(filterData);
@@ -73,9 +73,9 @@ function displayForecastWeather(forecastData) {
 };
 
 
-// Fetch and display weather
+//Fetch and display weather
 function fetchDisplayWeather(cityName) {
-  // Build  query  URL format
+  //Build  query  URL format
   var queryTodayURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
   var queryForecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey;
 
@@ -86,13 +86,13 @@ function fetchDisplayWeather(cityName) {
     })
     .then(function (todayData) {
       var dataBaseCityName = todayData.name;
-      // Validate if the input is a valid city name
+      //Validate if the input is a valid city name
       if (cityName.toLowerCase() === dataBaseCityName.toLowerCase()) {
         displayTodayWeather(todayData);
-        // Add the searched city to the search history (if not already present)
+        //Add the searched city to the search history (if not already present)
         if (!searchHistory.includes(cityName)) {
           searchHistory.push(cityName);
-          // Update the search history display
+          //Update the search history display
           updateSearchHistory();
         }
       } else {
@@ -100,12 +100,12 @@ function fetchDisplayWeather(cityName) {
       }
     })
 
+    //Display error modal when input is invalid
     .catch(function () {
       $('#errorModal').modal('show');
     });
-  
 
-  // Get 5-day forecast from database
+  //Get 5-day forecast from database
   fetch(queryForecastURL)
     .then(function (response) {
       return response.json();
@@ -114,10 +114,14 @@ function fetchDisplayWeather(cityName) {
 };
 
 
-// On click event associated with the Search Button
+//On click event associated with the Search Button
 $('#search-button').on('click', function (event) {
   event.preventDefault();
   var inputCity = $('#search-input').val().trim();
+
+  //Convert input city name format match OpenWeatherMap API city name
+  inputCity = inputCity.charAt(0).toUpperCase() + inputCity.slice(1).toLowerCase();
+
   console.log(inputCity);
   $('#search-input').val("");
   fetchDisplayWeather(inputCity);
@@ -127,17 +131,16 @@ $('#search-button').on('click', function (event) {
 // Function to update the search history display
 function updateSearchHistory() {
 
-  // Save search history to local storage
+  //Save search history to local storage
   localStorage.setItem('savedSearchHistory', JSON.stringify(searchHistory));
 
-  // Clear the search history container
+  //Clear the search history container
   $('#history').empty();
 
-  // Create buttons for each city in the search history
+  //Create buttons for each city in the search history
   for (var i = 0; i < searchHistory.length; i++) {
     var cityButton = $('<button>').text(searchHistory[i]).addClass('city-button btn btn-secondary m-1');
-
-    // Append the city button to the search history container
+    //Append the city button to the search history container
     $('#history').append(cityButton);
   };
 };
@@ -160,5 +163,5 @@ $("#clear").on("click", function (event) {
   $('#history').empty();
   //empty the local storage
   localStorage.clear();
- 
+
 });
