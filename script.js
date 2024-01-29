@@ -137,7 +137,17 @@ function updateSearchHistory() {
   };
 };
 
+//Click event for city buttons
 $(document).on('click', '.city-button', function () {
   var clickedCity = $(this).text();
   fetchDisplayWeather(clickedCity);
+});
+
+//Click event for clear history
+$("#clear").on("click", function (event) {
+  event.preventDefault();
+  //empty history buttons
+  $('#history').empty();
+  //empty the local storage
+  localStorage.clear();
 });
