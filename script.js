@@ -41,13 +41,13 @@ function displayForecastWeather(forecastData) {
   console.log(forecastData.list);
 
   for (var i = 0; i < forecastData.list.length; i++) {
-    var hoursData = dayjs(forecastData.list[i].dt_txt).format('H')
+    var hoursData = dayjs(forecastData.list[i].dt_txt).format('H');
     // Create current hour variable to compare with database
     var currentHour = dayjs().format('H')
     console.log('currentHour' + currentHour);
 
     //Filter the timestamp 
-    if (parseInt(hoursData) > parseInt(currentHour)-3 && parseInt(hoursData) < parseInt(currentHour)) {
+    if (parseInt(hoursData) >= parseInt(currentHour)-3 && parseInt(hoursData) < parseInt(currentHour)) {
       
       // Create 5-day forecast weather conditions element
       var filterData = forecastData.list[i]
@@ -146,8 +146,14 @@ $(document).on('click', '.city-button', function () {
 //Click event for clear history
 $("#clear").on("click", function (event) {
   event.preventDefault();
+  
+  //empty previous weather information
+  $('#forecast').empty();
+  $('#today').empty();
+
   //empty history buttons
   $('#history').empty();
   //empty the local storage
   localStorage.clear();
+ 
 });
