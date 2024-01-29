@@ -2,6 +2,13 @@ var APIKey = "79855f5e2cc5e0d576620f20c250c98a";
 var currentDate = dayjs().format('DD/MM/YYYY');
 var searchHistory = [];
 
+// Load search history from local storage
+var storedHistory = localStorage.getItem('savedSearchHistory');
+if (storedHistory) {
+  searchHistory = JSON.parse(storedHistory);
+  updateSearchHistory();
+}
+
 //Display today's weather 
 function displayTodayWeather(todayData) {
   //Clear previous city weather information
@@ -73,7 +80,30 @@ function fetchDisplayWeather(cityName) {
     .then(function (response) {
       return response.json();
     })
-    .then(displayTodayWeather);
+    .then(function (todayData) {
+      var dataBaseCityName = todayData.name;
+      // Validate if the input is a valid city name
+      if (cityName.toLowerCase() === dataBaseCityName.toLowerCase()) {
+        displayTodayWeather(todayData);
+
+
+        // Add the searched city to the search history (if not already present)
+        if (!searchHistory.includes(cityName)) {
+          searchHistory.push(cityName);
+          updateSearchHistory();
+        }
+
+
+
+        // Clear user input
+        $('#search-input').val("");
+        // Update the search history display
+        updateSearchHistory();
+      } else {
+        return;
+      }
+    });
+  
 
   // Get 5-day forecast from database
   fetch(queryForecastURL)
@@ -87,27 +117,18 @@ function fetchDisplayWeather(cityName) {
 // On click event associated with the Search Button
 $('#search-button').on('click', function (event) {
   event.preventDefault();
-
   var inputCity = $('#search-input').val().trim();
   console.log(inputCity);
-
   fetchDisplayWeather(inputCity);
-
-  $('#search-input').val("");
-
-  // Add the searched city to the search history
-  searchHistory.push(inputCity);
-
-  // Clear user input
-  $('#search-input').val("");
-  
-  // Update the search history display
-  updateSearchHistory();
 
 });
 
 // Function to update the search history display
 function updateSearchHistory() {
+
+   // Save search history to local storage
+   localStorage.setItem('savedSearchHistory', JSON.stringify(searchHistory));
+
   // Clear the search history container
   $('#history').empty();
 
