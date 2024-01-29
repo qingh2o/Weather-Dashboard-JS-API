@@ -41,14 +41,17 @@ function displayForecastWeather(forecastData) {
   console.log(forecastData.list);
 
   for (var i = 0; i < forecastData.list.length; i++) {
-    var hours = dayjs(forecastData.list[i].dt_txt).format('H')
-    console.log();
-    var dates = dayjs(forecastData.list[i].dt_txt).format('DD/MM/YYYY')
+    var hoursData = dayjs(forecastData.list[i].dt_txt).format('H')
+    // Create current hour variable to compare with database
+    var currentHour = dayjs().format('H')
+    console.log('currentHour' + currentHour);
 
-    //Filter the timestamp
-    if (hours === '12' && dates !== currentDate) {
+    //Filter the timestamp 
+    if (parseInt(hoursData) > parseInt(currentHour)-3 && parseInt(hoursData) < parseInt(currentHour)) {
+      
       // Create 5-day forecast weather conditions element
       var filterData = forecastData.list[i]
+      console.log(filterData);
       var forecastDisplay = $('<div>').addClass('col-9 col-lg-2 m-3 p-4 shadow-sm rounded border border-2 border-light');
       var newDate = dayjs(filterData.dt_txt).format('DD/MM/YYYY');
       var forecastDate = $('<h6>').text(newDate);
@@ -85,25 +88,17 @@ function fetchDisplayWeather(cityName) {
       // Validate if the input is a valid city name
       if (cityName.toLowerCase() === dataBaseCityName.toLowerCase()) {
         displayTodayWeather(todayData);
-
-
         // Add the searched city to the search history (if not already present)
         if (!searchHistory.includes(cityName)) {
           searchHistory.push(cityName);
+          // Update the search history display
           updateSearchHistory();
         }
-
-
-
-        // Clear user input
-        $('#search-input').val("");
-        // Update the search history display
-        updateSearchHistory();
       } else {
         return;
       }
     });
-  
+
 
   // Get 5-day forecast from database
   fetch(queryForecastURL)
@@ -119,6 +114,7 @@ $('#search-button').on('click', function (event) {
   event.preventDefault();
   var inputCity = $('#search-input').val().trim();
   console.log(inputCity);
+  $('#search-input').val("");
   fetchDisplayWeather(inputCity);
 
 });
@@ -126,8 +122,8 @@ $('#search-button').on('click', function (event) {
 // Function to update the search history display
 function updateSearchHistory() {
 
-   // Save search history to local storage
-   localStorage.setItem('savedSearchHistory', JSON.stringify(searchHistory));
+  // Save search history to local storage
+  localStorage.setItem('savedSearchHistory', JSON.stringify(searchHistory));
 
   // Clear the search history container
   $('#history').empty();
