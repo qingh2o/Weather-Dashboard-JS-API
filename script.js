@@ -29,7 +29,7 @@ function displayTodayWeather(todayData) {
 
   //Display on the page
   temperature.prepend(weatherIcon);
-  todayDisplay.append(cityDisplayDate, temperature, windSpend, humidity);
+  todayDisplay.append(cityDisplayDate, temperature, humidity, windSpend);
   $('#today').append(todayDisplay);
 };
 
@@ -61,11 +61,10 @@ function displayForecastWeather(forecastData) {
       var weatherIcon = $('<img>').attr('src', iconURL);
 
       var temperature = $('<p>').text((filterData.main.temp - 273.15).toFixed(2) + ' °C').addClass('fs-4');
-      var windSpend = $('<p>').text('Wind: ' + filterData.wind.speed + ' KPH');
       var humidity = $('<p>').text('Humidity: ' + filterData.main.humidity + '%');
 
       //Display on the page
-      forecastDisplay.append(forecastDate, weatherIcon, temperature, windSpend, humidity);
+      forecastDisplay.append(forecastDate, weatherIcon, temperature, humidity);
       $('#forecast').append(forecastDisplay);
     };
   };
