@@ -51,7 +51,7 @@ function displayForecastWeather(forecastData) {
       // Create 5-day forecast weather conditions element
       var filterData = forecastData.list[i]
       console.log(filterData);
-      var forecastDisplay = $('<div>').addClass('col-9 col-lg-2 m-3 p-4 shadow-sm rounded border border-2 border-light');
+      var forecastDisplay = $('<div>').addClass('col m-3 p-4 shadow-sm rounded border border-2 border-light');
       var newDate = dayjs(filterData.dt_txt).format('DD/MM/YYYY');
       var forecastDate = $('<h6>').text(newDate);
 
