@@ -40,7 +40,9 @@ The application should look similar to the screenshot below.
 
 * Display current weather conditions and 5-day forecast when the user types a valid city name.
 ```text
-Automatically convert the first letter of user input to uppercase and the remaining letters to lowercase to match OpenWeatherMap API city names.
+Automatically convert the first letter of user input 
+to uppercase and the remaining letters to lowercase 
+to match OpenWeatherMap API city names.
 ```
 ![Page With Search A City](./screenshots/search_a_city.png)
 
@@ -56,7 +58,7 @@ Automatically convert the first letter of user input to uppercase and the remain
 
 ![Page With Display A City Weather](./screenshots/search_history.png)
 
-*  Empty the page after the user clicks the “Clear History” button.
+* Empty the page after the user clicks the “Clear History” button.
 
 ![Page With Clear Search History](./screenshots/clear_history.png)
 
@@ -64,11 +66,11 @@ Automatically convert the first letter of user input to uppercase and the remain
 
 Open Chrome DevTools by right-clicking the page and selecting "Inspect". An Elements panel should open either below or to the side of the webpage in the browser. Click the Applications tab and expand Local Storage in the Storage section to see saved cities displayed on the right.
 
-*  The "Inspect" page should look similar to the screenshot below.
+* The "Inspect" page should look similar to the screenshot below.
 
 ![Page With DevTools Screenshot](./screenshots/inspect_page_dev.png)
 
-*  Errors appear in the console log: error 400 (Bad Request) when the user enters empty spaces; error 404 (Not Found) when the user enters an invalid city. The "Inspect" page should look similar to the screenshot below.
+* Errors appear in the console log: error 400 (Bad Request) when the user enters empty spaces; error 404 (Not Found) when the user enters an invalid city. The "Inspect" page should look similar to the screenshot below.
 
 ![Page With Console Error  DevTools Screenshot](./screenshots/console_error.png)
 
